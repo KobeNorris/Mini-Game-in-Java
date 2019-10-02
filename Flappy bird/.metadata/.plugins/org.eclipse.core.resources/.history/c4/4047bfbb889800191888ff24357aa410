@@ -1,0 +1,53 @@
+package bird;
+
+import pipeLine.*;
+
+public class Bird {
+	private final int maxHeight = 560;
+	private final int minHeight = 35;
+	private final int jumpHigh = 45;
+	private final int g = 1.8;
+//	private int height = 35;
+	private int height = 560;
+	private int downSpeed = 0;
+	private boolean dead = false;
+	
+	public void setHeight (int height) {
+		this.height = height;
+	}
+	public int getHeight () {
+		return height;
+	}
+	
+	public void gravity () {
+		this.downSpeed += g;
+		if((height - minHeight) < downSpeed * 0.1) {
+			height = minHeight;
+		}else {
+			height -= downSpeed * 0.1;
+		}
+		return;
+	}
+	
+	public void flappy () {
+		this.downSpeed = 0;
+		
+		if(height <= maxHeight - jumpHigh) {
+			this.height += jumpHigh;
+		} else {
+			this.height = maxHeight;
+		}
+		return;
+	}
+	
+	public boolean getState () {
+		return dead;
+	}
+	
+//	public boolean hitPipe (Pipe[] pipeLines) {
+//		for(int t = 0; t < pipeLines.length; t++) {
+//			if()
+//		}
+//	}
+	
+}

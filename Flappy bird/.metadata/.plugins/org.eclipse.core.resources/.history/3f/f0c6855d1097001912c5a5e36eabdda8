@@ -1,0 +1,142 @@
+import java.awt.Color;
+import java.awt.Graphics;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
+import java.lang.reflect.Array;
+import java.util.Timer;
+import java.util.TimerTask;
+ 
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+
+import pipe.Pipe;
+import bird.Bird;
+ 
+public class stage extends JPanel{
+	private Pipe pipe[];//管道数组
+	private Bird bird;//鸟
+	private int space;//上下管道之间的间隔
+	public JLabel scoreBoard;//计分面板
+	private int score;//计分
+	public stage()
+	{
+		space=150;//<span style="font-family: Arial, Helvetica, sans-serif;">上下管道之间的间隔为150</span>
+		score=0;
+		scoreBoard=new JLabel("得分："+score);
+		pipe=new Pipe[5];//总共5跟根
+		for(int i=0;i<pipe.length;i++)
+		{
+			pipe[i]=new Pipe(400-space,i*130+110);//柱子每隔110m放一根
+			//System.out.println(pipe[i].toSting());
+		}
+		bird=new Bird();
+	}
+	public void play()
+	{
+		Timer timer=new Timer();//定时任务，即使不操作也能动
+		timer.schedule(new TimerTask()
+				{
+					public void run()
+					{
+						
+						if(bird.hit(pipe))//碰到，重置所有数据成员
+						{
+							//System.out.println("碰到了");
+							score=0;
+							scoreBoard.setText("得分："+score);
+							pipe=new Pipe[10];
+							for(int x=0;x<pipe.length;x++)
+								pipe[x]=new Pipe(400-space,x*130+110);
+							bird=new Bird();
+						}
+						else{//没碰到
+								//System.out.println("没碰到");
+								bird.fly(Bird.Down);//鸟默认向下飞
+								for(int x=0;x<pipe.length;x++)//管道每次往前移动10m，造成鸟向右移动的效果
+								{
+									pipe[x].setXpos(pipe[x].getXpos()-10);
+								}
+								score=score+10;
+								scoreBoard.setText("得分："+score);
+						}
+						repaint();
+					}
+				}, 0, 1000);//在不操作的情况下，每一秒飞一次
+		this.requestFocus();//获取”输入“焦点
+		this.addKeyListener(new KeyAdapter() {//加入键盘时间
+		public void keyPressed(KeyEvent e)
+		{
+			if(e.getKeyCode()==38)
+		<span style="white-space:pre">		</span>action(Bird.Up);
+			else if(e.getKeyCode()==40)
+				action(Bird.Down);
+		});
+	}
+	public void action(int direction)//按下上下方向键后执行的函数
+	{
+		
+		if(bird.hit(pipe))
+		{
+			//System.out.println("碰到了");
+			score=0;
+			scoreBoard.setText("得分："+score);
+			pipe=new Pipe[10];
+			for(int x=0;x<pipe.length;x++)
+				pipe[x]=new Pipe(400-space,x*130+110);
+			bird=new Bird();
+		}
+		else{
+			//System.out.println("没碰到");
+			if(direction==Bird.Up)
+			{
+				bird.fly(Bird.Up);
+			}
+			else if(direction==Bird.Down)
+			{
+				bird.fly(Bird.Down);
+			}
+			for(int x=0;x<pipe.length;x++)//管道每次往前移动10m，造成鸟向右移动的效果
+			{
+				pipe[x].setXpos(pipe[x].getXpos()-10);
+			}
+			score=score+10;
+			scoreBoard.setText("得分："+score);
+		}
+		repaint();
+	}
+	public void paint(Graphics g)
+	{
+			g.setColor(g.getColor());
+			g.fillRect(0, 0, getWidth(), getHeight());//用默认颜色清屏
+			g.setColor(Color.red);
+			g.fill3DRect(bird.getXpos(), bird.getFlyHeight(), 20, 20, true);//红色画鸟
+			g.setColor(Color.green);
+			for(int i=0;i<pipe.length;i++)//绿色画管道
+			{
+				g.fill3DRect(pipe[i].getXpos(), 0, 20, pipe[i].getUpHeight(), true);
+				g.fill3DRect(pipe[i].getXpos(),pipe[i].getUpHeight()+space, 20, pipe[i].getDownHeight(), true);
+			}
+			if(pipe[0].getXpos()+20<=0)//如果第一根管道出界，就删掉第一根管道，把后面的往前挪，再新创建一根管道
+			{
+				for(int i=1;i<pipe.length;i++)
+					pipe[i-1]=pipe[i];
+				pipe[pipe.length-1]=new Pipe(400-space,(pipe.length-1)*130+110);
+				//System.out.println(pipe[pipe.length-1].toSting());
+			}
+	}
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+		JFrame jf=new JFrame("flappyBird");
+		stage app=new stage();
+		jf.setLayout(null);
+		app.setBounds(0,20,600,400);
+		app.scoreBoard.setBounds(0, 0, 100, 20);
+		jf.add(app);
+		jf.add(app.scoreBoard);
+		jf.setSize(610, 460);
+		jf.setVisible(true);
+		app.play();//游戏开始
+	}
+ 
+}

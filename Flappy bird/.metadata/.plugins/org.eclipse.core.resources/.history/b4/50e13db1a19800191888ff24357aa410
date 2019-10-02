@@ -1,0 +1,61 @@
+package fbstage;
+
+//import java.awt.*;
+import java.awt.event.*;
+//import java.awt.image.BufferedImage;
+//import java.io.*;
+import javax.swing.*;
+
+//import javax.imageio.ImageIO;
+
+//import pipeLine.*;
+import background.*;
+//import bird.*;
+
+public class FBStage extends JFrame {
+    public BackGround myBackGround;
+    public showDis distanceShow;
+
+    public FBStage(String title) {
+        super(title);
+    }
+
+    public void init() {
+        this.setBounds(50, 40, 920, 740);
+        this.setDefaultCloseOperation(EXIT_ON_CLOSE);
+
+        this.setLayout(null);
+
+        myBackGround = new BackGround(this);
+        this.add(myBackGround);
+        
+        distanceShow = new showDis();
+        
+        this.addKeyListener(new MyKeyBoardEvent(this));
+
+        this.setVisible(true);
+    }
+}
+
+class showDis extends JPanel{
+	
+}
+
+class MyKeyBoardEvent extends KeyAdapter{
+     FBStage myStage;
+
+    MyKeyBoardEvent(FBStage myStage) {
+        super();
+        this.myStage = myStage;
+    }
+
+    @Override
+    public void keyPressed(KeyEvent k) {
+        super.keyPressed(k);
+        if (k.getKeyChar() == ' ') {
+            myStage.myBackGround.mybird.flappy();
+        }
+
+        return;
+    }
+}

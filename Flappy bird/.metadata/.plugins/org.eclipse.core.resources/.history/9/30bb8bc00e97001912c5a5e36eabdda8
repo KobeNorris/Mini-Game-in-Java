@@ -1,0 +1,48 @@
+package pipe;
+
+public class Pipe {
+	private int upHeight;//表示顶管道端的高度
+	private int downHeight;//表示底端管道段的高度
+	private int xpos;
+	public Pipe()
+	{
+		upHeight=0;
+		downHeight=0;
+		xpos=0;
+	}
+	public Pipe(int maxHeight,int xpos)//给管道一个最大总长度（maxHeight)=upHeight+downHeight。还有管道的水平位置
+	{
+		double num;
+		num=Math.random();
+		while(num==0)
+			num=Math.random();
+		upHeight=(int) (maxHeight*num);//随机产生一个顶端管道段高度（<maxHeight)
+		downHeight=maxHeight-upHeight;//用总长度减去upHeight
+		this.xpos=xpos;
+	}
+	public void setXpos(int xpos)
+	{
+		this.xpos=xpos;
+	}
+	public int getXpos()
+	{
+		return xpos;
+	}
+	public int getUpHeight()
+	{
+		return upHeight;
+	}
+	public int getDownHeight()
+	{
+		return downHeight;
+	}
+	public String toSting()
+	{
+		return "("+upHeight+","+downHeight+")";
+	}
+--------------------- 
+作者：Chenny丶 
+来源：CSDN 
+原文：https://blog.csdn.net/qq_1017097573/article/details/51707098 
+版权声明：本文为博主原创文章，转载请附上博文链接！
+}

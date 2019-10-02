@@ -1,0 +1,64 @@
+package background;
+
+import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.io.*;
+
+import javax.imageio.ImageIO;
+import javax.swing.JPanel;
+
+import bird.Bird;
+import fbstage.FBStage;
+import pipeLine.Pipe;
+
+public class BackGround extends JPanel {
+    public Bird mybird;
+    public Pipe pipeLine[];
+    private int interval = 280;
+    FBStage mj;
+    BufferedImage bi;
+    
+    int pipeNumber = 5;
+
+    public BackGround(FBStage mj) {
+        this.setBounds(0, 0, mj.getWidth(), mj.getHeight());
+        this.mj = mj;
+        this.mybird = new Bird();
+        pipeLine = new Pipe[pipeNumber];
+        for(int i = 0; i < pipeNumber; i++) {
+        	pipeLine[i] = new Pipe(800 + i * interval);
+        }
+    }
+
+    @Override
+    protected void paintComponent(Graphics g) {
+        try {
+        	File bgImg = new File("./img/background.jpg"); //The route is strange
+            BufferedImage bi = ImageIO.read(bgImg);
+            g.drawImage(bi, 50, 40, this);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        
+        try {
+        	File bImg = new File("./img/bird.png"); //The route is strange
+            BufferedImage bi = ImageIO.read(bImg);
+            g.drawImage(bi, 140, 600 - mybird.getHeight(), this);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        
+        g.setColor(Color.GREEN);
+        for(int t = 0; t < pipeNumber; t++) {
+        	int up = pipeLine[t].getUpHeight();
+        	int down = pipeLine[t].getDownHeight();
+        	int position = pipeLine[t].getPosition();
+        	if(position < 800) {
+        		g.fillRect(position + 50, 40, 40, 560 - up);
+        		g.fillRect(position + 50, 600 - down, 40, down + 3);
+        		g.fillRect(position + 45, 580 - up, 50, 20);
+//        		g.fillRect(position + 40, 600 - down     , 50, 20);
+        	}
+        }
+    }
+}

@@ -1,0 +1,18 @@
+package pipeLine;
+
+import java.util.*;
+
+public class Pipe {
+	private final int maxHeight = 560;
+	private final int minHeight = 35;
+	
+	private int width = 10;
+	private int upHeight;
+	private int downHeight;
+	private int position;
+	
+	public Pipe() {
+		this.position = 800 - width;
+		this.upHeight = ;
+	}
+}

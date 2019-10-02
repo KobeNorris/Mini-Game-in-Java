@@ -1,0 +1,22 @@
+{
+    "configurations": [
+        {
+            "type": "java",
+            "name": "CodeLens (Launch) - mineClearance",
+            "request": "launch",
+            "mainClass": "mineClearance"
+        },
+        {
+            "type": "java",
+            "name": "CodeLens (Launch) - First",
+            "request": "launch",
+            "mainClass": "First"
+        },
+        {
+            "type": "java",
+            "name": "CodeLens (Launch) - figureGenerator",
+            "request": "launch",
+            "mainClass": "figureGenerator"
+        }
+    ]
+}
